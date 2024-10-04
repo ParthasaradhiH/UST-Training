@@ -1,13 +1,13 @@
-package com.ust.LaptopFilter_Jpastreams_Application;
+package com.ust.LaptopFilter_Jpastreamer_Application;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class LaptopFilterJpastreamsApplication {
+public class LaptopFilterJpastreamerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(LaptopFilterJpastreamsApplication.class, args);
+		SpringApplication.run(LaptopFilterJpastreamerApplication.class, args);
 	}
 
 }
