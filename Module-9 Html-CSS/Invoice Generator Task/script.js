@@ -1,69 +1,71 @@
 function numberToWords(num) {
-const ones = [
-    "",
-    "one",
-    "two",
-    "three",
-    "four",
-    "five",
-    "six",
-    "seven",
-    "eight",
-    "nine",
-];
-const tens = [
-    "",
-    "",
-    "twenty",
-    "thirty",
-    "forty",
-    "fifty",
-    "sixty",
-    "seventy",
-    "eighty",
-    "ninety",
-];
-const teens = [
-    "ten",
-    "eleven",
-    "twelve",
-    "thirteen",
-    "fourteen",
-    "fifteen",
-    "sixteen",
-    "seventeen",
-    "eighteen",
-    "nineteen",
-];
+  const ones = [
+      "",
+      "one",
+      "two",
+      "three",
+      "four",
+      "five",
+      "six",
+      "seven",
+      "eight",
+      "nine",
+  ];
+  const tens = [
+      "",
+      "",
+      "twenty",
+      "thirty",
+      "forty",
+      "fifty",
+      "sixty",
+      "seventy",
+      "eighty",
+      "ninety",
+  ];
+  const teens = [
+      "ten",
+      "eleven",
+      "twelve",
+      "thirteen",
+      "fourteen",
+      "fifteen",
+      "sixteen",
+      "seventeen",
+      "eighteen",
+      "nineteen",
+  ];
 
-if (num < 10) return ones[num];
-if (num < 20) return teens[num - 10];
-if (num < 100)
-    return (
-    tens[Math.floor(num / 10)] + (num % 10 ? " " + ones[num % 10] : "")
-    );
-if (num < 1000)
-    return (
-    ones[Math.floor(num / 100)] +
-    " hundred" +
-    (num % 100 ? " and " + numberToWords(num % 100) : "")
-    );
-if (num < 100000)
-    return (
-    numberToWords(Math.floor(num / 1000)) +
-    " thousand" +
-    (num % 1000 ? " " + numberToWords(num % 1000) : "")
-    );
-return (
-    numberToWords(Math.floor(num / 100000)) +
-    " lakh" +
-    (num % 100000 ? " " + numberToWords(num % 100000) : "")
-);
+  if (num < 10) return ones[num];
+  if (num < 20) return teens[num - 10];
+  if (num < 100)
+      return (
+      tens[Math.floor(num / 10)] + (num % 10 ? " " + ones[num % 10] : "")
+      );
+  if (num < 1000)
+      return (
+      ones[Math.floor(num / 100)] +
+      " hundred" +
+      (num % 100 ? " and " + numberToWords(num % 100) : "")
+      );
+  if (num < 100000)
+      return (
+      numberToWords(Math.floor(num / 1000)) +
+      " thousand" +
+      (num % 1000 ? " " + numberToWords(num % 1000) : "")
+      );
+  return (
+      numberToWords(Math.floor(num / 100000)) +
+      " lakh" +
+      (num % 100000 ? " " + numberToWords(num % 100000) : "")
+  );
 }
 
 
 document.getElementById("invoiceForm").addEventListener("submit", function (e) {
   e.preventDefault();
+
+  const editedName = document.querySelector('h1[contenteditable="true"]').innerText;
 
   const invoiceNo = document.getElementById("invoiceNo").value;
   const date = document.getElementById("date").value;
@@ -109,6 +111,8 @@ document.getElementById("invoiceForm").addEventListener("submit", function (e) {
     serviceTableBody.appendChild(serviceRow);
   });
 
+
+  document.getElementById('invoiceHeading').innerText = editedName;
   document.getElementById("displayInvoiceNo").textContent = invoiceNo;
   document.getElementById("displayDate").textContent = date;
 
@@ -136,13 +140,21 @@ document.getElementById("invoiceForm").addEventListener("submit", function (e) {
   document.getElementById("invoice").style.display = "block";
 });
 
+
+
+
+
 function editInvoice() {
   document.getElementById("invoiceForm").style.display = "block";
   document.getElementById("invoice").style.display = "none";
 }
 
 
+
+
 let serviceCounter = 0;
+
+
 
 function addService() {
   serviceCounter++;
@@ -175,23 +187,57 @@ function addService() {
         <label for="rate-${serviceCounter}">Rate (INR):</label>
         <input type="number" class="rate" id="rate-${serviceCounter}" required />
       </div>
-    </div>
+      </div>
+      <div ">
+      <button class="delete-button type="button" onclick="deleteService(this)">Delete</button>
+      </div>
   `;
 
   serviceContainer.appendChild(newServiceRow);
 }
 
 
-function downloadInvoice() {
-    const invoice = document.getElementById("invoice");
 
-    const options = {
-        margin: 1,
-        filename: 'Invoice.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+
+function deleteService(button) {
+    const serviceItem = button.parentNode;
+    serviceItem.remove();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+function downloadInvoice() {
+    const editedName = document.querySelector('h1[contenteditable="true"]').innerText;
+
+    document.querySelector('.button-container').style.display = 'none';
+
+    const invoice = document.getElementById('invoice');
+    const opt = {
+        margin:       0.5,
+        filename:     'Invoice.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2 },
+        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
     };
 
-    html2pdf().from(invoice).set(options).save();
- }
+    html2pdf().from(invoice).set(opt).save().then(() => {
+        document.querySelector('.button-container').style.display = 'flex';
+    });
+}
+
+
+
+
+
+
+

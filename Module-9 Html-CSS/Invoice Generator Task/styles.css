@@ -155,3 +155,16 @@ th {
 .right-button:hover {
     opacity: 0.8;
 }
+
+.delete-button {
+    background-color: red;
+    opacity: .8;
+    color: white;
+    border: none;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.delete-button:hover {
+    background-color: darkred;
+}
